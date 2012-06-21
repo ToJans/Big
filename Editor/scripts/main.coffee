@@ -1,10 +1,17 @@
 require ['jquery'],($) ->
   # upon loading initialize the codemirror windows and the persistence for the forms
   $ ->
+    $('#indexAdder').submit ->
+      result = $(@).serializeObject()
+      $target = $('#indexform textarea')
+      $target.val($target.val()+result.newItem+"\n")
+      $target.closest('form').submit()
+      false
+
 
     # first load all the supported mimetypes in the mimetype selector
     for mimetype in CodeMirror.listMIMEs()
-      $('select[name=contenttype]').each ->
+      $('select[name=type]').each ->
         $(this).append "<option>#{mimetype.mime}</option>"
 
     # enable persistence for all the forms of the class `persistable` and restore them if available
@@ -23,7 +30,7 @@ require ['jquery'],($) ->
     $('textarea.codemirror').each ->
       # intercept mimetype changes and invoke them on the codemirrors; determine current contenttype
       contenttype=null
-      $(@).closest('form').children('[name=contenttype]').each ->
+      $(@).closest('form').children('[name=type]').each ->
         $(@).change ->
           contenttype=$(@).val()
           mirr.setOption 'mode',contenttype

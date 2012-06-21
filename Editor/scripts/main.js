@@ -4,10 +4,18 @@
     var determineFoldingType;
     $(function() {
       var mimetype, _i, _len, _ref;
+      $('#indexAdder').submit(function() {
+        var $target, result;
+        result = $(this).serializeObject();
+        $target = $('#indexform textarea');
+        $target.val($target.val() + result.newItem + "\n");
+        $target.closest('form').submit();
+        return false;
+      });
       _ref = CodeMirror.listMIMEs();
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         mimetype = _ref[_i];
-        $('select[name=contenttype]').each(function() {
+        $('select[name=type]').each(function() {
           return $(this).append("<option>" + mimetype.mime + "</option>");
         });
       }
@@ -26,7 +34,7 @@
       return $('textarea.codemirror').each(function() {
         var contenttype, mirr;
         contenttype = null;
-        $(this).closest('form').children('[name=contenttype]').each(function() {
+        $(this).closest('form').children('[name=type]').each(function() {
           $(this).change(function() {
             contenttype = $(this).val();
             mirr.setOption('mode', contenttype);

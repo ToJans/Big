@@ -1,18 +1,58 @@
-<!DOCTYPE html>
+<!DOCTYPE html5>
 <html>
-  <head>
-    <title>CodeMirror: CoffeeScript mode</title>
+<head>
+    <title>Big: Editor</title>
     <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css" />
-    <link rel="stylesheet" href="http://codemirror.net/doc/docs.css" />
-    <script src="scripts/lib/require.js" data-main="scripts/loadmain"></script>
-  </head>
-  <body>
-    <h1>CodeMirror: CoffeeScript mode</h1>
-    <form class="persistable" action="" method="post">
-      <input type="text" name="key" value="Code.Example"/>
-      <select name="contenttype"></select>
-      <textarea class="codemirror" name="code" rows="12" cols="72"></textarea>
-      <input type="submit"/>
-    </form>
-  </body>
+    <script src="scripts/lib/require.js" type="text/javascript" data-main="scripts/loadmain"></script>
+    <style type="text/css">
+        .index 
+        {
+            display:inline-block;
+            width:25em;
+            vertical-align:top;
+        }
+        
+        .assets
+        {
+            vertical-align:top;
+            display:inline-block;
+            width:auto;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="index">
+        <form action="#" id="indexAdder"> 
+            <label>Add snip</label>
+            <input type="text" name="newItem" value="" />
+            <input type="submit" />
+        </form>
+        <form id="indexform" class="persistable" action="" method="post">
+        <input type="hidden" name="key" value="Meta.Index" />
+        <input type="hidden" name="type" value="text/plain" />
+        <textarea name="modules" class="codemirror" rows="20" cols="40" readonly="readonly">
+        </textarea>
+        <input type="submit" />
+        </form>
+    </div>
+    <div class="assets">
+        <h1>
+            Big: POC number one</h1>
+        <form class="persistable" action="" method="post">
+            <input type="text" name="key" value="Code.Example" />
+            <select name="type">
+            </select>
+            <textarea class="codemirror" name="code" rows="12" cols="72"></textarea>
+        <input type="submit" />
+        </form>
+        <form class="persistable" action="" method="post">
+            <input type="text" name="key" value="Code.Example2" />
+            <select name="type">
+            </select>
+            <textarea class="codemirror" name="code" rows="12" cols="72"></textarea>
+            <input type="submit" />
+        </form>
+    </div>
+</body>
 </html>
