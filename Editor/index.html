@@ -2,57 +2,35 @@
 <html>
 <head>
     <title>Big: Editor</title>
-    <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css" />
-    <script src="scripts/lib/require.js" type="text/javascript" data-main="scripts/loadmain"></script>
+    <link rel="stylesheet" href="styles/codemirror.css" />
+    <script src="scripts/require.js" type="text/javascript" data-main="scripts/loadmain"></script>
     <style type="text/css">
-        .index 
+        #index
         {
-            display:inline-block;
-            width:25em;
-            vertical-align:top;
+            display: block;
+            float: right;
+            vertical-align: top;
+            background: #FFC;
+            border: grey solid 1px;
         }
         
-        .assets
+        #assets form
         {
-            vertical-align:top;
-            display:inline-block;
-            width:auto;
+            display: inline-block;
+            vertical-align: top;
+            display: inline-block;
+            background: #FCF;
+            border: grey solid 1px;
         }
-        
     </style>
 </head>
 <body>
-    <div class="index">
-        <form action="#" id="indexAdder"> 
-            <label>Add snip</label>
-            <input type="text" name="newItem" value="" />
-            <input type="submit" />
-        </form>
-        <form id="indexform" class="persistable" action="" method="post">
-        <input type="hidden" name="key" value="Meta.Index" />
-        <input type="hidden" name="type" value="text/plain" />
-        <textarea name="modules" class="codemirror" rows="20" cols="40" readonly="readonly">
-        </textarea>
-        <input type="submit" />
-        </form>
-    </div>
-    <div class="assets">
-        <h1>
-            Big: POC number one</h1>
-        <form class="persistable" action="" method="post">
-            <input type="text" name="key" value="Code.Example" />
-            <select name="type">
-            </select>
-            <textarea class="codemirror" name="code" rows="12" cols="72"></textarea>
-        <input type="submit" />
-        </form>
-        <form class="persistable" action="" method="post">
-            <input type="text" name="key" value="Code.Example2" />
-            <select name="type">
-            </select>
-            <textarea class="codemirror" name="code" rows="12" cols="72"></textarea>
-            <input type="submit" />
-        </form>
+    <h1>Project #Startup10: project "BIG" - early editor preview</h1>
+    <div>
+        <div id="index">
+        </div>
+        <div id="assets">
+        </div>
     </div>
 </body>
 </html>

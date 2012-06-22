@@ -24,4 +24,12 @@
     <setting name="Compile">True</setting>
     <setting name="Minify">True</setting>
   </file>
+  <file name="codeEditor.coffee">
+    <setting name="Compile">True</setting>
+    <setting name="Minify">True</setting>
+  </file>
+  <file name="Browser.coffee">
+    <setting name="Compile">True</setting>
+    <setting name="Minify">True</setting>
+  </file>
 </web-workbench>
