@@ -1,9 +1,5 @@
-define ['jquery','persistance'], ($,persistance) ->
+define ['jquery','persistance','CoffeeScript','loader','codemirrorwrapper', 'jqueryserializeobject'],($,persistance,CoffeeScript,loader) ->
 
-  require ['CoffeeScript','coffeekup', 'codemirror', 'jqueryserializeobject'], ->
-    require ['codemirrorxml', 'codemirrorjavascript', 'codemirrorcss', 'codemirrorcs', 'codemirrorclike','codemirrorfolding']
-
-  
   template = (key) -> "
         <form class='persistable' method='post' action='#'>
           <input type='text' name='key' value='#{key}' readonly='readonly'  />
@@ -13,11 +9,10 @@ define ['jquery','persistance'], ($,persistance) ->
           <input type='submit' value='Save changes'/>
           <a href='#' class='close'>[x]</a>
           <textarea class='codemirror' name='code' rows='12' cols='72'/>
+          <input type='submit' value='Run' class='run' />
         </form>"
   
   render = (target,key) ->
-    if $(target).find("form input[name=key][value=\"#{key}\"]").length > 0
-      return
     rendered = template key
     $self = $(rendered).appendTo(target)
     persistance.restore($self,key)
@@ -25,9 +20,9 @@ define ['jquery','persistance'], ($,persistance) ->
     $self.submit -> 
       persistance.persist($self)
       false
-    $self.children('a.close').click ->
+    $self.find('a.close').click ->
       $(@).closest('form').remove()
-    $self.children('textarea').each ->
+    $self.find('textarea').each ->
       # intercept mimetype changes and invoke them on the codemirrors; determine current contenttype
       contenttype=null
       $(@).closest('form').find('[name=type]').each ->
@@ -50,6 +45,26 @@ define ['jquery','persistance'], ($,persistance) ->
       # make sure the textarea value gets updated when focus is lost
       mirr.setOption 'onBlur', -> mirr.save()
       determineFoldingType(mirr,contenttype)
+    $self.find('input.run').click ->
+      type=$(@).closest('form').find('[name=type]').val()
+      code= $(@).closest('form').find('[name=code]').val()
+      js= -> alert "#{type} is currently not runnable from the browser"
+      
+      if type=="text/javascript"
+        js = new Function(code)
+      else if type=="text/x-coffeescript"
+        oldcode = code.split(/[\n\r]/g)
+        code = ""
+        for oc in oldcode
+          if (oc.indexOf("table://") == 0)
+            oc = "loader.modifyTable '"+oc+"', ->"
+          code+=oc+"\n\r"
+        js = new Function(CoffeeScript.compile(code))
+      try
+        js.call(this)
+      catch err
+        alert "execution error: "+err
+      false
 
   determineFoldingType=(mirr,contenttype) ->
     ff = null

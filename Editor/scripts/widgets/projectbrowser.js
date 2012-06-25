@@ -1,9 +1,9 @@
 (function() {
 
-  define(['jquery', 'codeeditor', 'persistance'], function($, codeeditor, persistance) {
-    var appendLink, linktemplate, render, template;
+  define(['jquery', 'persistance'], function($, persistance) {
+    var appendLink, linktemplate, render, renderAsset, template;
     template = function(key) {
-      return "    <div>      <form name='adder'>        <label>Add new resource</label>        <input type='hidden' name='key' value='" + key + "' />        <input type='text' name='newItem' />        <input type='submit' name='Add' />      </form>      <ul name='browser'>      </ul>   </div>";
+      return "    <div>      <form name='adder'>        <label>Add new resource</label>        <input type='hidden' name='key' value='" + key + "' />        <input type='text' name='newItem' />        <select name='type'>          <option value='code'>code</option>          <option value='table'>table</option>        </select>        <input type='submit' name='Add' />      </form>      <ul name='browser'>      </ul>   </div>";
     };
     linktemplate = function(refname) {
       var name;
@@ -20,12 +20,8 @@
         refname = refs[_i];
         el = $(linktemplate(refname)).appendTo(target);
         el.find('a.assetref').click(function() {
-          var link;
-          link = $(this).attr('href');
-          if (link.indexOf("asset://") === 0) {
-            codeeditor.render(assetTarget, link);
-          } else {
-            alert("Only inline assets are currently supported");
+          if ($(assetTarget).find(":input[name=key][value=\"" + refname + "\"]").length === 0) {
+            renderAsset(assetTarget, refname);
           }
           return false;
         });
@@ -44,37 +40,45 @@
       }
       return _results;
     };
+    renderAsset = function(assetTarget, refname) {
+      var type;
+      type = refname.substr(0, refname.indexOf("://"));
+      return require([type + 'editor'], function(ed) {
+        if (ed) {
+          return ed.render(assetTarget, refname);
+        }
+      });
+    };
     render = function(target, key, assetTarget) {
-      var $adder, $browser, $modules, $newItem, $self, rendered, value, values, _ref, _results;
+      var $adder, $browser, $modules, $newItem, $self, $type, k, rendered, value, values, _ref, _results;
       rendered = template(key);
       $self = $(rendered).appendTo(target);
-      $adder = $($self.find('[name=adder]'));
+      $adder = $($self.find('form[name=adder]'));
       $newItem = $($adder.find('[name=newItem]'));
+      $type = $($adder.find('[name=type]'));
       $modules = $($adder.find('[name=module]'));
       $browser = $($self.find('[name=browser]'));
       $adder.submit(function() {
-        var name, refname;
+        var name, refname, type;
         name = $newItem.val();
-        refname = name;
-        if (name.indexOf("://") === -1) {
-          refname = "asset://" + name;
-        }
-        if ($adder.find("[name=module][value=\"" + refname + "\"]").length > 0) {
+        type = $type.val();
+        refname = type + "://" + name;
+        if ($adder.find(":input[name=module][value=\"" + refname + "\"]").length > 0) {
           alert("duplicate asset name!!");
         } else {
           $adder.append("<input type='hidden' name='module' value='" + refname + "' />");
           persistance.persist($adder);
           appendLink($browser, refname, assetTarget);
         }
-        codeeditor.render(assetTarget, refname);
+        renderAsset(assetTarget, refname);
         $newItem.val("");
         return false;
       });
       _ref = persistance.getValue(key);
       _results = [];
-      for (key in _ref) {
-        values = _ref[key];
-        if (!(key.indexOf('module') === 0)) {
+      for (k in _ref) {
+        values = _ref[k];
+        if (!(k.indexOf('module') === 0)) {
           continue;
         }
         if (!$.isArray(values)) {
@@ -86,7 +90,7 @@
           for (_i = 0, _len = values.length; _i < _len; _i++) {
             value = values[_i];
             appendLink($browser, value, assetTarget);
-            _results1.push($adder.append("<input type='hidden' name='" + key + "' value='" + value + "' />"));
+            _results1.push($adder.append("<input type='hidden' name='module' value='" + value + "' />"));
           }
           return _results1;
         })());

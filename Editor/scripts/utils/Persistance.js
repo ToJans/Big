@@ -6,6 +6,9 @@
     persistance.getValue = function(key) {
       return store.get(key);
     };
+    persistance.setValue = function(key, value) {
+      return store.set(key, value);
+    };
     persistance.persist = function(form, key) {
       var data;
       data = $(form).serializeObject();

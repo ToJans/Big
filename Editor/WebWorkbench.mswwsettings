@@ -32,4 +32,16 @@
     <setting name="Compile">True</setting>
     <setting name="Minify">True</setting>
   </file>
+  <file name="Table.coffee">
+    <setting name="Compile">True</setting>
+    <setting name="Minify">True</setting>
+  </file>
+  <file name="codeMirrorWrapper.coffee">
+    <setting name="Compile">True</setting>
+    <setting name="Minify">True</setting>
+  </file>
+  <file name="loader.coffee">
+    <setting name="Compile">True</setting>
+    <setting name="Minify">True</setting>
+  </file>
 </web-workbench>

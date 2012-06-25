@@ -1,10 +1,7 @@
 (function() {
 
-  define(['jquery', 'persistance'], function($, persistance) {
+  define(['jquery', 'persistance', 'CoffeeScript', 'loader', 'codemirrorwrapper', 'jqueryserializeobject'], function($, persistance, CoffeeScript, loader) {
     var determineFoldingType, render, template;
-    require(['CoffeeScript', 'coffeekup', 'codemirror', 'jqueryserializeobject'], function() {
-      return require(['codemirrorxml', 'codemirrorjavascript', 'codemirrorcss', 'codemirrorcs', 'codemirrorclike', 'codemirrorfolding']);
-    });
     template = function(key) {
       var mime;
       return ("        <form class='persistable' method='post' action='#'>          <input type='text' name='key' value='" + key + "' readonly='readonly'  />          <select name='type'>        ") + ((function() {
@@ -16,13 +13,10 @@
           _results.push("  <option>" + mime.mime + "</option>");
         }
         return _results;
-      })()) + "          </select>          <input type='submit' value='Save changes'/>          <a href='#' class='close'>[x]</a>          <textarea class='codemirror' name='code' rows='12' cols='72'/>        </form>";
+      })()) + "          </select>          <input type='submit' value='Save changes'/>          <a href='#' class='close'>[x]</a>          <textarea class='codemirror' name='code' rows='12' cols='72'/>          <input type='submit' value='Run' class='run' />        </form>";
     };
     render = function(target, key) {
       var $self, contenttype, rendered;
-      if ($(target).find("form input[name=key][value=\"" + key + "\"]").length > 0) {
-        return;
-      }
       rendered = template(key);
       $self = $(rendered).appendTo(target);
       persistance.restore($self, key);
@@ -31,10 +25,10 @@
         persistance.persist($self);
         return false;
       });
-      $self.children('a.close').click(function() {
+      $self.find('a.close').click(function() {
         return $(this).closest('form').remove();
       });
-      return $self.children('textarea').each(function() {
+      $self.find('textarea').each(function() {
         var mirr;
         contenttype = null;
         $(this).closest('form').find('[name=type]').each(function() {
@@ -57,6 +51,34 @@
           return mirr.save();
         });
         return determineFoldingType(mirr, contenttype);
+      });
+      return $self.find('input.run').click(function() {
+        var code, js, oc, oldcode, type, _i, _len;
+        type = $(this).closest('form').find('[name=type]').val();
+        code = $(this).closest('form').find('[name=code]').val();
+        js = function() {
+          return alert("" + type + " is currently not runnable from the browser");
+        };
+        if (type === "text/javascript") {
+          js = new Function(code);
+        } else if (type === "text/x-coffeescript") {
+          oldcode = code.split(/[\n\r]/g);
+          code = "";
+          for (_i = 0, _len = oldcode.length; _i < _len; _i++) {
+            oc = oldcode[_i];
+            if (oc.indexOf("table://") === 0) {
+              oc = "loader.modifyTable '" + oc + "', ->";
+            }
+            code += oc + "\n\r";
+          }
+          js = new Function(CoffeeScript.compile(code));
+        }
+        try {
+          js.call(this);
+        } catch (err) {
+          alert("execution error: " + err);
+        }
+        return false;
       });
     };
     determineFoldingType = function(mirr, contenttype) {

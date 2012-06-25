@@ -5,6 +5,8 @@ define ['lscache','jquery','jqueryserializeobject'],(store,$) ->
 
   persistance.getValue = (key) -> 
     store.get(key)
+  persistance.setValue = (key,value) -> 
+    store.set(key,value)
   persistance.persist = (form,key) -> 
     data = $(form).serializeObject()
     store.set(data.key,data)

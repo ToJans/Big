@@ -1,6 +1,6 @@
 (function() {
 
-  define(['jquery', 'projectbrowser'], function($, browser) {
+  require(['jquery', 'projectbrowser'], function($, browser) {
     return $(function() {
       return browser.render('#index', 'index://root', '#assets');
     });
