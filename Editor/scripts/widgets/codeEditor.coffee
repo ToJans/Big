@@ -1,4 +1,4 @@
-define ['jquery','persistance','CoffeeScript','loader','codemirrorwrapper', 'jqueryserializeobject'],($,persistance,CoffeeScript,loader) ->
+define ['jquery','persistance','CoffeeScript','loader','events','codemirrorwrapper', 'jqueryserializeobject'],($,persistance,CoffeeScript,loader,Events) ->
 
   template = (key) -> "
         <form class='persistable' method='post' action='#'>
@@ -56,12 +56,22 @@ define ['jquery','persistance','CoffeeScript','loader','codemirrorwrapper', 'jqu
         oldcode = code.split(/[\n\r]/g)
         code = ""
         for oc in oldcode
+          if (oc.indexOf("code://") == 0)
+            oc = persistance.getValue(oc).code
+          code+=oc+"\n\r"
+        oldcode = code.split(/[\n\r]/g)
+        code=""
+        for oc in oldcode
           if (oc.indexOf("table://") == 0)
             oc = "loader.modifyTable '"+oc+"', ->"
           code+=oc+"\n\r"
-        js = new Function(CoffeeScript.compile(code))
+        prefix = "_____e = new Events()\n"
+        for name,func of new Events()
+          prefix+="#{name} = (msg,data) -> _____e.#{name}(msg,data)\n"
+        js = new Function(CoffeeScript.compile(prefix+code))
       try
-        js.call(this)
+        scope = {}
+        js.call(scope)
       catch err
         alert "execution error: "+err
       false

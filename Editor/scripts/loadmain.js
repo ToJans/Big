@@ -9,6 +9,7 @@
         persistance: "utils/persistance",
         codemirrorwrapper: "utils/codemirrorwrapper",
         loader: 'utils/loader',
+        events: 'utils/events',
 
         jquery: "vendor/jquery/jquery-1.7.2",
         jqueryserializeobject: "utils/jqueryserializeobject",
@@ -50,8 +51,11 @@
         'jqueryposition': ['jquery'],
         'jqueryautoresize': ['jquery'],
 
-        'loader': { exports: 'loader' }
+        'loader': { exports: 'loader' },
+        'events': { exports: 'Events' }
     }
 });
 
-require(['main'], function () { });
+var global = global || window;
+
+require(['main'], function (m) {});

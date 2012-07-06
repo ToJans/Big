@@ -1,4 +1,4 @@
-define ['persistance','jquery','handsontable'], (persistance,$) ->
+define ['persistance','jquery','handsontable','events'], (persistance,$,blah) ->
   
   loader = {}
 
@@ -79,6 +79,7 @@ define ['persistance','jquery','handsontable'], (persistance,$) ->
         $("#assets .output").remove()
         $("#assets").append ("<div class='output'></div>")
         $("#assets .output").append(s)
+      
       func.call(scope)
       for k,v of scope when /^[A-Z][0-9]+$/.test(k)
         row = parseInt(k.substr(1))-1

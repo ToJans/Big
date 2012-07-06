@@ -1,6 +1,6 @@
 (function() {
 
-  define(['persistance', 'jquery', 'handsontable'], function(persistance, $) {
+  define(['persistance', 'jquery', 'handsontable', 'events'], function(persistance, $, blah) {
     var loader;
     loader = {};
     loader.modify = function(asset, func) {

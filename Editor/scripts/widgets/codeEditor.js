@@ -1,6 +1,6 @@
 (function() {
 
-  define(['jquery', 'persistance', 'CoffeeScript', 'loader', 'codemirrorwrapper', 'jqueryserializeobject'], function($, persistance, CoffeeScript, loader) {
+  define(['jquery', 'persistance', 'CoffeeScript', 'loader', 'events', 'codemirrorwrapper', 'jqueryserializeobject'], function($, persistance, CoffeeScript, loader, Events) {
     var determineFoldingType, render, template;
     template = function(key) {
       var mime;
@@ -53,7 +53,7 @@
         return determineFoldingType(mirr, contenttype);
       });
       return $self.find('input.run').click(function() {
-        var code, js, oc, oldcode, type, _i, _len;
+        var code, func, js, name, oc, oldcode, prefix, scope, type, _i, _j, _len, _len1, _ref;
         type = $(this).closest('form').find('[name=type]').val();
         code = $(this).closest('form').find('[name=code]').val();
         js = function() {
@@ -66,15 +66,31 @@
           code = "";
           for (_i = 0, _len = oldcode.length; _i < _len; _i++) {
             oc = oldcode[_i];
+            if (oc.indexOf("code://") === 0) {
+              oc = persistance.getValue(oc).code;
+            }
+            code += oc + "\n\r";
+          }
+          oldcode = code.split(/[\n\r]/g);
+          code = "";
+          for (_j = 0, _len1 = oldcode.length; _j < _len1; _j++) {
+            oc = oldcode[_j];
             if (oc.indexOf("table://") === 0) {
               oc = "loader.modifyTable '" + oc + "', ->";
             }
             code += oc + "\n\r";
           }
-          js = new Function(CoffeeScript.compile(code));
+          prefix = "_____e = new Events()\n";
+          _ref = new Events();
+          for (name in _ref) {
+            func = _ref[name];
+            prefix += "" + name + " = (msg,data) -> _____e." + name + "(msg,data)\n";
+          }
+          js = new Function(CoffeeScript.compile(prefix + code));
         }
         try {
-          js.call(this);
+          scope = {};
+          js.call(scope);
         } catch (err) {
           alert("execution error: " + err);
         }
