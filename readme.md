@@ -55,7 +55,7 @@ code://Denormalizer.Invoice
 
 SUT = new Alerter()
 for i in [1..10]
-  SUT.alert "Woohoo %i"
+  SUT.alert "Woohoo #{i}"
 
 report "<h1>Done</h1>"
 ```
