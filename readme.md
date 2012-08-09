@@ -67,6 +67,10 @@ First you need to add the code resources mentioned on top as well as a "Data res
 Then you press "Run" on the example, et voila, everything should work/compile, and you should see the updates 
 in the excel-like grid in green, and a "report" saying "Done"
 
+## Demo
+
+As usual, you can find the demo over at Appharbor: [here](http://big.apphb.com/editor/).
+
 ## Why are you not persueing with this project/Startup ?
 
 Every single person I mention this to does not "get it", so I consider this not the way to go... For now at least. Maybe 
