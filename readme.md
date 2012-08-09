@@ -1,6 +1,6 @@
 # Project #Startup10 - Startup #3 : Project Big
 
-This is one of the projects of a bigger one: [Project #StartUp10: Creating 10 Startups in one year]
+This is one of the projects of a bigger one: [Project #StartUp10: Creating 10 Startups in one year](http://www.corebvba.be/blog/post/Project-Startup10-Learning-to-build-your-own-business.aspx).
 
 The idea of project #3 was to create a platform to implement some really quick solutions for small problems.
 I would come to a customer, anayze the small issue in about 2-4 hours; implement it in the same timeframe, and 
@@ -21,7 +21,8 @@ The idea was to distribute these events to other clients and the server using si
 Here is a simple example to prove the concept
 
 ### code://Domain.Alerter - text/x-coffeescript
-   
+
+```coffeescript
 class Alerter
                  
   alertcount: 0
@@ -33,20 +34,22 @@ class Alerter
       
   handle 'alerted', (e) ->
     @alertcount+=1
-
+```
 
 
 ### code://Denormalizer.Invoice - text/x-coffeescript
 
+```coffeescript
 handle 'alerted', (e) ->
   loader.modifyTable 'table://invoice/123', ->
     @A5 += 1
     @B5 = e.message
   alert (e.message)
-
+```
 
 ### code://Example - text/x-coffeescript    
 
+```coffeescript
 code://Domain.Alerter
 code://Denormalizer.Invoice
 
@@ -55,6 +58,7 @@ for i in [1..10]
   SUT.alert "Woohoo %i"
 
 report "<h1>Done</h1>"
+```
 
 ### How does it work ?
 
@@ -63,9 +67,9 @@ First you need to add the code resources mentioned on top as well as a "Data res
 Then you press "Run" on the example, et voila, everything should work/compile, and you should see the updates 
 in the excel-like grid in green, and a "report" saying "Done"
 
-## Why are you not presueing with this project/Startup ?
+## Why are you not persueing with this project/Startup ?
 
 Every single person I mention this to does not "get it", so I consider this not the way to go... For now at least. Maybe 
 I will continue with this later on, but for now, I consider this a failure.
 
-#CIAO
+# CIAO
