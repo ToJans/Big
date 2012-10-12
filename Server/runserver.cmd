@@ -1,0 +1,1 @@
+erl -sname example -pa apps/example/ebin -pa deps/*/ebin -s example_app -eval "io:format(\"~n~nServer is running:~n\")." 

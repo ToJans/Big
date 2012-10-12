@@ -165,7 +165,7 @@ pip-log.txt
 #Vim backups
 *~
 
-#Erlang BEAM
+#Erlang 
 *.beam
-
+erl_crash.dump
 
