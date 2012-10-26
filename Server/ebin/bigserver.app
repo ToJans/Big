@@ -1,0 +1,9 @@
+{application,bigserver,
+             [{description,"Server for project BIG"},
+              {vsn,"0.0.1"},
+              {registered,[]},
+              {applications,[kernel,stdlib,cowboy]},
+              {mod,{bigserver_app,[]}},
+              {env,[]},
+              {modules,[bigserver,bigserver_app,bigserver_sup,
+                        toppage_handler]}]}.

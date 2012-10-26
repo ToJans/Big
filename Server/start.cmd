@@ -1,0 +1,1 @@
+erl -pa ebin deps/ranch/ebin deps/cowboy/ebin -s bigserver -eval "os:cmd(\"start http://localhost:1234\")."

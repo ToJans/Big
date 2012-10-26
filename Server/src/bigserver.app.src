@@ -1,14 +1,11 @@
 {application, bigserver,
  [
-  {description, ""},
+  {description, "Server for project BIG"},
   {vsn, "0.0.1"},
-  {registered, [bigserver_sup]},
+  {registered, []},
   {applications, [
                   kernel,
                   stdlib,
-                  crypto,
-                  public_key,
-                  ssl,
                   cowboy
                  ]},
   {mod, { bigserver_app, []}},
