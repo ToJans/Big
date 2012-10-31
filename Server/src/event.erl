@@ -1,6 +1,6 @@
 %% From http://learnyousomeerlang.com/static/erlang/evserv.erl
 %% Event server
--module(evserv).
+-module(event).
 -compile(export_all).
 
 -record(state, {events,    %% list of #event{} records
