@@ -168,4 +168,5 @@ pip-log.txt
 #Erlang 
 *.beam
 erl_crash.dump
-
+Server/deps/*.*
+Server/rel/*.*
